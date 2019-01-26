@@ -1,8 +1,9 @@
 <?php
 
-namespace Modules\Project\Http\ervices;
+namespace Modules\Project\Http\Services;
 
 use Modules\Project\Http\Repositories\TaskRepository;
+use Modules\Project\Transformers\TaskResource;
 
 class TaskService
 {
@@ -11,6 +12,13 @@ class TaskService
     public function __construct(TaskRepository $repository)
     {
         $this->repository = $repository;
+    }
+
+    public function index($project_id)
+    {
+        $tasks = $this->repository->index($project_id);
+
+        return TaskResource::collection($tasks);
     }
 
     public function store($data)

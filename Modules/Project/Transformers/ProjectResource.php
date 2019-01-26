@@ -24,7 +24,7 @@ class ProjectResource extends Resource
             ],
             //'links' => ['self' => asset('/api/project/' . $this->id)],
             'links' => [
-                'self' => '/api/project/' . $this->id
+                'self' => url('/api/project/' . $this->id)
             ],
         ];
     }

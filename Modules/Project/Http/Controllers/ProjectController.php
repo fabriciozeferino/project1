@@ -2,8 +2,7 @@
 
 namespace Modules\Project\Http\Controllers;
 
-
-use Illuminate\Routing\Controller;
+use Modules\Project\Http\Controllers\Controller;
 
 use Modules\Project\Http\Services\ProjectService;
 
@@ -24,12 +23,14 @@ class ProjectController extends Controller
 
     public function index()
     {
-        return $this->service->index();
+        return $this->respondWithJson($this->service->index());
     }
 
-    public function show($project)
+    public function show($project_id)
     {
-        return $this->service->show($project);
+        $project = $this->service->show($project_id);
+
+        return $this->respondWithJson($project);
     }
 
     public function store(CreateProjectRequest $request)

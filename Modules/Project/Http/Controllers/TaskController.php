@@ -2,12 +2,14 @@
 
 namespace Modules\Project\Http\Controllers;
 
-use Modules\Project\Http\Requests\CreateTaskRequest;
-use Modules\Project\Http\Requests\UpdateTaskRequest;
-use Modules\Project\Http\Requests\DeleteTaslRquest;
+use Modules\Project\Http\Controllers\Controller;
 
 use Modules\Project\Http\Services\TaskService;
 
+use Modules\Project\Http\Requests\CreateTaskRequest;
+use Modules\Project\Http\Requests\UpdateTaskRequest;
+use Modules\Project\Http\Requests\DeleteTaslRquest;
+// TO-DO Modules\Project\Transformers\TaskResource;
 
 class TaskController extends Controller
 {
@@ -18,9 +20,16 @@ class TaskController extends Controller
         $this->service = $service;
     }
 
+    public function index($project_id)
+    {
+        return $this->respondWithJson($this->service->index($project_id));
+    }
+
     public function show($project_id, $task_id)
     {
-        return $this->service->showRow($project_id, $task_id);
+        $task = $this->service->showRow($project_id, $task_id);
+
+        return $this->respondWithJson($task);
     }
 
     public function store(CreateTaskRequest $request)

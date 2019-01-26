@@ -27,13 +27,7 @@ class ProjectRepository extends AbstractRepository
         return $this->hasMany(TaskRepository::class, 'project_id', 'id');
     }
 
-    public function index($api_token)
-    {
-        return $this
-            ->leftJoin('users', 'projects.user_id', '=', 'users.id')
-           // ->where('api_token', $api_token)
-            ->paginate(5);
-    }
+
 
     public function showWithRelationship($project_id)
     {

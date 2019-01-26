@@ -18,24 +18,24 @@ use Illuminate\Http\Request;
 // });
 
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group([
 
-    Route::get('projects', 'ProjectController@index');
-    Route::get('projects/{project}', 'ProjectController@show');
-    Route::post('projects', 'ProjectController@store');
-    Route::put('projects/{project}', 'ProjectController@update');
-    Route::delete('projects/{project}', 'ProjectController@delete');
+    'middleware' => 'auth:api'
 
+], function () {
+
+    Route::get('project', 'ProjectController@index');
+    Route::get('project/{project}', 'ProjectController@show');
+    Route::post('project', 'ProjectController@store');
+    Route::put('project/{project}', 'ProjectController@update');
+    Route::delete('project/{project}', 'ProjectController@delete');
+
+    Route::get('project/{project}/task', 'TaskController@index');
+    Route::get('project/{project}/task/{task}', 'TaskController@show');
+    Route::post('project/{project}/task', 'TaskController@store');
+    Route::put('project/{project}/task/{task}', 'TaskController@update');
+    Route::delete('project/{project}/task/{task}', 'TaskController@delete');
 });
-
-//Route::post('register', 'Auth\RegisterController@register');
-//Route::post('login', 'Auth\LoginController@login');
-//Route::post('logout', 'Auth\LoginController@logout');
-
-// Route::middleware('auth:api')
-//     ->get('/user', function (Request $request) {
-//         return $request->user();
-//     });
 
 
 // Route::fallback(function () {

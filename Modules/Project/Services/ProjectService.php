@@ -18,7 +18,7 @@ class ProjectService
 
     public function index()
     {
-        $projects = $this->repository->index(1);
+        $projects = $this->repository->index();
 
         return ProjectResource::collection($projects);
     }

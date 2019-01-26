@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 abstract class AbstractRepository extends Model //implements RepositoryInterface
 {
+    // Get all registers
+    public function index($id = null)
+    {
+        return $this
+            ->leftJoin('users', $this->table . '.user_id', '=', 'users.id')
+           // ->where('api_token', $api_token)
+            ->get();
+    }
+
     // Get all instances of model
     public function getAllWhere($where, $relationship)
     {

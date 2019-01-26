@@ -5,11 +5,10 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\User;
 
 class AuthTest extends TestCase
 {
-    use WithFaker;
+    use WithFaker, RefreshDatabase;
     /**
      * @test
      * Test login
@@ -19,14 +18,14 @@ class AuthTest extends TestCase
         $email = $this->faker->email();
 
         //Create user
-        User::create([
+        \App\User::create([
             'name' => $this->faker->firstName(),
             'email' => $email,
             'password' => bcrypt('secret1234')
         ]);
 
         //attempt login
-        $response = $this->json('POST', asset('/api/auth/login'), [
+        $response = $this->json('POST', asset('/api/auth/authenticate/'), [
             'email' => $email,
             'password' => 'secret1234',
         ]);
@@ -35,6 +34,5 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertArrayHasKey('access_token', $response->json());
-
     }
 }
