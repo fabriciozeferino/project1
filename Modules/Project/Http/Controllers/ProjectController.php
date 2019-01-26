@@ -2,71 +2,48 @@
 
 namespace Modules\Project\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+
 use Illuminate\Routing\Controller;
+
+use Modules\Project\Http\Services\ProjectService;
+
+use Modules\Project\Http\Requests\CreateProjectRequest;
+use Modules\Project\Http\Requests\UpdateProjectRequest;
+use Modules\Project\Http\Requests\DeleteProjectRequest;
+use Modules\Project\Transformers\ProjectResource;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
+    public $service;
+
+    public function __construct(ProjectService $service)
+    {
+        $this->service = $service;
+    }
+
+
     public function index()
     {
-        return view('project::index');
+        return $this->service->index();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
+    public function show($project)
     {
-        return view('project::create');
+        return $this->service->show($project);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function store(Request $request)
+    public function store(CreateProjectRequest $request)
     {
+        return $this->service->store($request->all());
     }
 
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show()
+    public function update(UpdateProjectRequest $request)
     {
-        return view('project::show');
+        return $this->service->update($request->all());
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
+    public function delete(DeleteProjectRequest $request)
     {
-        return view('project::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
-    {
+        return $this->service->delete($request['id']);
     }
 }
