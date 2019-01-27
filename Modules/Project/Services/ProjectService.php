@@ -6,6 +6,9 @@ use Modules\Project\Http\Repositories\ProjectRepository;
 use Modules\Project\Transformers\ProjectResource;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
+
 
 class ProjectService
 {
@@ -18,6 +21,9 @@ class ProjectService
 
     public function index()
     {
+        $payload = auth()->payload();
+
+
         $projects = $this->repository->index();
 
         return ProjectResource::collection($projects);
