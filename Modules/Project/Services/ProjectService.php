@@ -9,22 +9,30 @@ use Carbon\Carbon;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-
 class ProjectService
 {
     public $repository;
 
+    private $user;
+
     public function __construct(ProjectRepository $repository)
     {
         $this->repository = $repository;
+
+        $this->user = auth()->user();
     }
 
     public function index()
     {
-        $payload = auth()->payload();
+        //$permissions = $this->repository->index($this->user->id);
 
+        //$repository = $this->repository->invites;
 
-        $projects = $this->repository->index();
+        //return $permissions;
+
+        $projects = $this->repository->index($this->user->id);
+
+        return $projects;
 
         return ProjectResource::collection($projects);
     }

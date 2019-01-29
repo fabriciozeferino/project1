@@ -9,12 +9,19 @@ use Illuminate\Support\Facades\Auth;
 abstract class AbstractRepository extends Model //implements RepositoryInterface
 {
     // Get all registers
-    public function index($id = null)
+    public function index($id)
     {
         return $this
-            ->leftJoin('users', $this->table . '.user_id', '=', 'users.id')
-           // ->where('api_token', $api_token)
-            ->get();
+
+            ->rightJoin('users as owner', $this->table . '.user_id', '=', 'owner.id')
+            ->leftJoin('project_user', $this->table . '.id', '=', 'project_user.project_id')
+            ->leftJoin('users', 'project_user.user_id', '=', 'users.id')
+            ->leftJoin('tasks', 'projects.id', '=', 'tasks.project_id')
+
+            ->where('owner.id', $id)
+            ->orWhere('project_user.user_id', $id)
+            //->groupBy('id')
+            ->toSql();
     }
 
     // Get all instances of model

@@ -27,6 +27,14 @@ class ProjectRepository extends AbstractRepository
         return $this->hasMany(TaskRepository::class, 'project_id', 'id');
     }
 
+    /**
+     * The projects that belong to the user.
+     */
+    public function invites()
+    {
+        return $this->belongsToMany(\App\User::class, 'project_user', 'project_id', 'user_id');
+    }
+
 
 
     public function showWithRelationship($project_id)

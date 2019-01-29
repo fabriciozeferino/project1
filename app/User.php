@@ -30,6 +30,24 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
+     * The projects that belong to the user.
+     */
+    public function permissions()
+    {
+        return $this->belongsToMany(\Modules\Project\Http\Repositories\ProjectRepository::class, 'project_user', 'project_id', 'user_id');
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(\Modules\Project\Http\Repositories\ProjectRepository::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(\Modules\Project\Http\Repositories\TaskRepository::class);
+    }
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
