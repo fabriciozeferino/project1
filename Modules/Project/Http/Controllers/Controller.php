@@ -11,8 +11,5 @@ class Controller extends BaseController
 {
     //use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function respondWithJson($data)
-    {
-        return response()->json($data, 200, [], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-    }
+    
 }

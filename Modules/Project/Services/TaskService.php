@@ -3,22 +3,32 @@
 namespace Modules\Project\Http\Services;
 
 use Modules\Project\Http\Repositories\TaskRepository;
-use Modules\Project\Transformers\TaskResource;
 
-class TaskService
+class TaskService extends AbstractService
 {
     public $repository;
+
+    private $user;
 
     public function __construct(TaskRepository $repository)
     {
         $this->repository = $repository;
+
+        $this->user = auth()->user();
     }
 
-    public function index($project_id)
+    public function index($id)
     {
-        $tasks = $this->repository->index($project_id);
+        $repository = $this->repository->index($this->user->id, $id);
 
-        return TaskResource::collection($tasks);
+        return $this->respondWithJson($repository, 200);
+    }
+
+    public function show($task_id)
+    {
+        $repository = $this->repository->show($task_id);
+
+        return $this->respondWithJson($repository, 200);
     }
 
     public function store($data)
@@ -26,17 +36,6 @@ class TaskService
         $row = $this->repository->store($data);
 
         return redirect('/projects/' . $data['project_id']);
-    }
-
-    public function showRow($project_id, $task_id)
-    {
-        $repository = $this->repository->show($task_id);
-
-        if ($repository['project_id'] == $project_id) {
-            return response()->json($repository);
-        }
-
-        return response()->json(['error' => 'Unauthorized'], 401, ['X-Header-One' => 'Header Value']);
     }
 
     public function update($data)

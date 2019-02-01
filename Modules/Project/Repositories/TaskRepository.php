@@ -2,8 +2,6 @@
 
 namespace Modules\Project\Http\Repositories;
 
-use Illuminate\Support\Carbon;
-
 
 class TaskRepository extends AbstractRepository
 {
@@ -16,26 +14,32 @@ class TaskRepository extends AbstractRepository
 
     protected $guarded = [];
 
-    protected $dates = ['due_at'];
+    //protected $dates = ['due_at'];
 
+    /**
+     * App\Users
+     */
     public function user()
     {
         return $this->belongsTo(\App\User::class);
     }
 
+    /**
+     * Modules\Project\Http\Repositories\ProjectRepository
+     */
     public function project()
     {
         return $this->belongsTo(ProjectRepository::class, 'project_id', 'id');
     }
 
-    public function dueTo($date_created, $due_date)
+     // Get all registers
+    public function index($id, $project_id = null)
     {
-        $start = Carbon::createFromFormat('Y-m-d H:i:s', $date_created)->format('U');
+        return $this
+            ->where($this->table . '.user_id', $id)
+            ->where($this->table . '.project_id', $project_id)
 
-        $end = Carbon::createFromFormat('Y-m-d H:i:s', $due_date)->format('U');
-
-        $now = now()->format('U');
-
-        return ((($start - $now) / ($start - $end)) * 100);
+             //->get();
+            ->paginate(2);
     }
 }

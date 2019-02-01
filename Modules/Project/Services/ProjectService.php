@@ -3,13 +3,12 @@
 namespace Modules\Project\Http\Services;
 
 use Modules\Project\Http\Repositories\ProjectRepository;
-use Modules\Project\Transformers\ProjectResource;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-class ProjectService
+
+
+
+class ProjectService extends AbstractService
 {
     public $repository;
 
@@ -24,24 +23,18 @@ class ProjectService
 
     public function index()
     {
-        //$permissions = $this->repository->index($this->user->id);
+        $user_id = $this->user->id;
 
-        //$repository = $this->repository->invites;
+        $project = $this->repository->index($user_id);
 
-        //return $permissions;
-
-        $projects = $this->repository->index($this->user->id);
-
-        return $projects;
-
-        return ProjectResource::collection($projects);
+        return $this->respondWithJson($project, 200);
     }
 
     public function show($id)
     {
         $project = $this->repository->show($id);
 
-        return ProjectResource::make($project);
+        return $this->respondWithJson($project, 200);
     }
 
     public function store($data)
@@ -57,7 +50,7 @@ class ProjectService
 
         $project->update($data);
 
-        return response()->json($project, 200);
+        return $this->respondWithJson($project, 200);
     }
 
     public function delete($data)
@@ -66,6 +59,7 @@ class ProjectService
 
         $project->delete();
 
-        return response()->json([null, 204]);
+        return $this->respondWithJson(null, 204);
+
     }
 }

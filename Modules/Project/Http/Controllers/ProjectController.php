@@ -9,7 +9,7 @@ use Modules\Project\Http\Services\ProjectService;
 use Modules\Project\Http\Requests\CreateProjectRequest;
 use Modules\Project\Http\Requests\UpdateProjectRequest;
 use Modules\Project\Http\Requests\DeleteProjectRequest;
-use Modules\Project\Transformers\ProjectResource;
+
 
 class ProjectController extends Controller
 {
@@ -20,17 +20,14 @@ class ProjectController extends Controller
         $this->service = $service;
     }
 
-
     public function index()
     {
-        return $this->respondWithJson($this->service->index());
+        return $this->service->index();
     }
 
     public function show($project_id)
     {
-        $project = $this->service->show($project_id);
-
-        return $this->respondWithJson($project);
+        return $this->service->show($project_id);
     }
 
     public function store(CreateProjectRequest $request)

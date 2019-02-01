@@ -16,12 +16,17 @@ class ProjectRepository extends AbstractRepository
 
     protected $guarded = [];
 
-
+    /**
+     * App\Users
+     */
     public function user()
     {
         return $this->belongsTo(\App\User::class);
     }
 
+    /**
+     * Modules\Project\Http\Repositories\TaskRepository
+     */
     public function tasks()
     {
         return $this->hasMany(TaskRepository::class, 'project_id', 'id');
@@ -35,14 +40,13 @@ class ProjectRepository extends AbstractRepository
         return $this->belongsToMany(\App\User::class, 'project_user', 'project_id', 'user_id');
     }
 
-
-
-    public function showWithRelationship($project_id)
+    public function index($id)
     {
-        $projects = $this->show($project_id);
-
-        $tasks = $projects->with(['user', 'tasks'])->where('id', $project_id)->get();
-
-        return response()->json($tasks);
+        return $this
+            ->where($this->table . '.user_id', $id)
+            ->orWhere('project_user.read', true)
+            ->leftJoin('project_user', $this->table . '.user_id', 'project_user.user_id')
+            ->paginate();
     }
+
 }
